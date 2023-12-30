@@ -48,5 +48,31 @@ map.addLayer({
   },
 });
 
+// Markers & Controls
+// https://docs.mapbox.com/mapbox-gl-js/api/markers/?size=n_10_n
+map.addControl(new mapboxgl.ScaleControl());
+map.addControl(
+  new mapboxgl.NavigationControl({
+    visualizePitch: true,
+  })
+);
+
+const popup = new mapboxgl.Popup({
+  closeButton: false,
+});
+popup.setText("<" + start[0].toFixed(2) + ", " + start[1].toFixed(2) + ">");
+
+const starter = new mapboxgl.Marker({
+  color: "green",
+  draggable: false,
+  pitchAlignment: "auto",
+  rotationAlignment: "auto",
+  occludedOpacity: 0.9,
+})
+  .setLngLat(start)
+  .setPopup(popup)
+  .addTo(map)
+  .togglePopup(); // show it
+
 await map.once("load");
 console.log("map loaded");
