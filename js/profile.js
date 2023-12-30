@@ -1,0 +1,4 @@
+const GPX_DATA = "YOUR DATA HERE";
+const ACCESS_TOKEN = "YOUR TOKEN HEHE";
+
+export { GPX_DATA, ACCESS_TOKEN };
