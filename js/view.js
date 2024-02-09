@@ -1,5 +1,6 @@
 import { GPX_DATA, ACCESS_TOKEN } from "./profile.js";
 import { fetchGPX } from "./util.js";
+import { options } from "./options.js";
 
 const rawData = await fetchGPX(GPX_DATA);
 console.log("gpx loaded");
@@ -12,7 +13,7 @@ mapboxgl.accessToken = ACCESS_TOKEN;
 
 const map = new mapboxgl.Map({
   container: "map",
-  style: "mapbox://styles/mapbox/outdoors-v12",
+  style: options.style,
   center: start,
   zoom: 10,
   pitch: 0,
@@ -23,7 +24,7 @@ await map.once("style.load");
 
 map.addSource("mapbox-dem", {
   type: "raster-dem",
-  url: "mapbox://mapbox.terrain-rgb",
+  url: options.dem,
   tileSize: 512,
   maxzoom: 14,
 });
