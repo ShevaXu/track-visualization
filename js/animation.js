@@ -1,6 +1,7 @@
 import { GPX_DATA, ACCESS_TOKEN } from "./profile.js";
 import { fetchGPX } from "./util.js";
 import { options } from "./options.js";
+import { analyze } from "./analysis.js";
 
 mapboxgl.accessToken = ACCESS_TOKEN;
 
@@ -29,9 +30,8 @@ map.addSource("mapbox-dem", {
 map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
 
 const routeData = rawData.features[0];
-// compute the centroid of the route
-const centroid = turf.centroid(routeData);
-console.log(centroid);
+const analysis = analyze(routeData);
+// console.log(analysis);
 
 // add track route line
 map.addSource("line", {
@@ -54,7 +54,18 @@ map.addLayer({
 
 map.once("idle", () => {
   map.flyTo({
-    center: centroid.geometry.coordinates,
+    center: analysis.centroid,
     zoom: 10,
   });
+
+  // add marker
+  const marker = new mapboxgl.Marker({
+    color: "red",
+    scale: 0.8,
+    draggable: false,
+    pitchAlignment: "auto",
+    rotationAlignment: "auto",
+  })
+    .setLngLat(analysis.start)
+    .addTo(map);
 });
